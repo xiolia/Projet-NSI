@@ -1,0 +1,37 @@
+
+create table oracle(
+        id_oracle integer primary key autoincrement,
+        nom_or char(50),
+        niveau integer,
+        phrase_typique char(50));
+
+create table phrase1(
+        id_oracle integer references oracle(id_oracle),
+        phrase char(50),
+        id_objet integer references elt(id_objet));
+
+create table phrase2(
+        id_oracle integer references oracle(id_oracle),
+        phrase char(50),
+        id_objet integer references elt(id_objet));
+        
+create table phrase3(
+        id_oracle integer references oracle(id_oracle),
+        phrase char(50),
+        id_objet integer references elt(id_objet));  
+        
+create table fond(
+        id_fd integer,
+        nom char(50) primary key
+        );
+
+create table elt(
+        id_objet integer primary key autoincrement,
+        nom char(50)
+        );
+        
+create table inventory(
+        id_objet integer,
+        quantité integer
+        );
+        
