@@ -27,20 +27,25 @@ create table fond(
         nom char(50) primary key,
         id_o1 integer references oracle(id_oracle),
         id_o2 integer references oracle(id_oracle),
-        id_elt1 integer references elt(id_objet),
-        id_elt2 integer references elt(id_objet)
+        nom_elt1 integer references elt(nom),
+        nom_elt2 integer references elt(nom)
         );
 
 create table elt(
-        id_objet integer primary key autoincrement,
-        nom char(50)
-        );
-        
-create table inventory(
-        id_objet integer,
+        id_objet integer autoincrement,
+        nom char(50) primary key,
         quantité integer
         );
-        
+
+create table journal(
+        contenu char(300) primary key
+        );
+
+insert into journal values
+        ("257/36/51\nRappel: Le boulanger à des goûts bien étranges,\nil semblerait que tout aliment putride existant serait\nun met excellent pour son palet.\nLui donner les pots de confitures centenaires si l'odeur\ndevient trop forte.")
+        ("259/05/22\nLe vieux couple à  l'entrée du village ne semble\npouvoir tenir leur langue lorsque je suis là.\nJ'aimerais leur offrir un beau bouquet\nde fleurs. Les deux sont allergiques au pollen,\nquelle sublime vue cette douce vengeance ferait!")
+        ;
+
 insert into elt (nom) values
         ("du thym"),
         ("une fiole qui sent bon"),
