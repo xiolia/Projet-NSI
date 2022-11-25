@@ -20,7 +20,7 @@ def parler():
 ### recherche ###
 ### ceci est une proposition de fonction, si t'as la flemme d'en faire une autre on garde, sinn on jette
 def cherche():
-	base.execute("select nom_elt1, nom_elt2 from fond where id = ?", (position,))
+	base.execute("select id_elt1, id_elt2 from fond where id = ?", (position,))
 	elt = base.fetchall()
 	objets = []
 	for i in elt:
@@ -28,11 +28,12 @@ def cherche():
 	rd = randint(0,2)
 	if rd == 2:
 		print("Malgré tous vos efforts, vous n'avez absolument rien trouvé.")
-		rond_point()
 	else:
-		print("Vous avez trouvé " + objets[rd])
-		base.execute("update elt set (quantité)=(1+ (select quantité from elt where nom=?)) where nom=?", (b[rd], b[rd]))
-		rond_point()
+		base.execute("select nom from elt where id_objet = ?", (objets[rd],))
+		O = base.fetchone()
+		print("Vous avez trouvé " + O)
+		base.execute("update elt set (quantité)=(1+ (select quantité from elt where nom=?)) where nom=?", (O, O))
+	rond_point()
 
 ### inventaire ###
 def inventaire():
