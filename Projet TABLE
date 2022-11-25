@@ -6,16 +6,19 @@ create table oracle(
         phrase_typique char(50));
 
 create table phrase1(
+        nv integer references oracle(niveau),
         id_oracle integer references oracle(id_oracle),
         phrase char(50),
         id_objet integer references elt(id_objet));
 
 create table phrase2(
+        nv integer references oracle(niveau),
         id_oracle integer references oracle(id_oracle),
         phrase char(50),
         id_objet integer references elt(id_objet));
         
 create table phrase3(
+        nv integer references oracle(niveau),
         id_oracle integer references oracle(id_oracle),
         phrase char(50),
         id_objet integer references elt(id_objet));  
