@@ -27,8 +27,8 @@ create table fond(
         nom char(50) primary key,
         id_o1 integer references oracle(id_oracle),
         id_o2 integer references oracle(id_oracle),
-        nom_elt1 integer references elt(nom),
-        nom_elt2 integer references elt(nom)
+        id_elt1 integer references elt(nom),
+        id_elt2 integer references elt(nom)
         );
 
 create table elt(
