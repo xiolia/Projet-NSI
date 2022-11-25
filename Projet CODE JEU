@@ -5,38 +5,127 @@ Created on Fri Nov 18 09:00:53 2022
 
 @author: kenji.moua
 """
+
+### initialisation ###
+from random import randint
 import sqlite3 as sql
 connexion = sql.connect('Table')
 base = connexion.cursor()
+position = 5
 
+### parlotation ###
+def parler():
+	rond_point()
 
-position = 1
+### recherche ###
+### ceci est une proposition de fonction, si t'as la flemme d'en faire une autre on garde, sinn on jette
+def cherche():
+	base.execute("select objet1, objet2 from fond where id = ?", (position,))
+	elt = base.fetchall()
+	objets = []
+	for i in elt:
+		objets.append(i)
+	rd = randint(0,2)
+	if rd == 2:
+		print("Malgré tous vos efforts, vous n'avez absolument rien trouvé.")
+		rond_point()
+	else:
+		print("Vous avez trouvé " + objets[rd])
+		base.execute("update elt set (quantité)=(1+ select quantité from elt where nom=?) where nom=?", (b[rd], b[rd]))
+		rond_point()
 
-def maison():
-    pass
+### inventaire ###
+def inventaire():
+	base.execute("select nom, quantité from elt where quantité>0")
+	elts = base.fetchall()
+	for i in elts:
+		c = []
+		for y in i:
+			c.append(y)
+		print(c[0] +": "+str(c[1])
+	rond_point()
 
+### journal ###
+### implique que journal à déjà des pages de remplies avant qu'il soit amnésique
+def écrire(c):
+	print(" . . .")
+	txt = input("")
+	base.execute("insert into journal values (?)", (txt,))
+	journal(c+1)
+	
+def journal(c):
+	"""
+	c - type int
+	appel initial => c doit être égal à zéro
+	te redirectionne, tourne les pages du livre et permet d'en écrire de nouvelle
+	"""
+	base.execute("select contenu from journal where id = ?", (c,))
+	print(base.fetchone())
+	page = "- - - page " +str(c+1)+" - - \n "
+	if c == 0:
+		page += "s - page suivante\n"
+	base.execute("select count(*) from journal")
+	compte = base.fetchone()
+	if c == compte-1:
+		page += "p - page précédente\nn - nouvelle page\n"
+	else: 
+		page += "p - page précédente\ns - page suivante\n"
+	print(page+"r - refermer le journal\n")
+	
+	player = input()
+	
+	if player in "rR":
+		rond_point()
+	elif c != 0 and player in "pP":
+		journal(c-1)
+	elif c == compte-1 and player in "Nn":
+		print(" . . .")
+		txt = input("")
+		base.execute("insert into journal values (?)", (txt,))
+		journal(c+1)
+	elif c != compte-1 and player in "Ss":
+		journal(c+1)
+	else:
+		journal(c)
+	
+### sac ###
+def sac():
+	print("Si vous souhaitez ouvrir le journal appuyez sur la touche 'j' ")
+	print("Si vous souhaitez consulter vos objets appuyez sur la touche 'o' ")
+	a = input("\n")
+	if a == "j":
+		journal(0)
+	elif a == "o":
+		inventaire()
+	
+### changement de position ###
+def avancer():
+	print("Si vous voulez vous déplacez appuyez sur la touche 'z' ")
+	a = input("\n")
+	if a == "z":
+	print("")
+		      
+	rond_point()
+
+### affichage des fonctionalités ###
 def rond_point():
-    print("1 - fouillez dans le sac\n2 - se déplacer\n3 - parler à quelqu'un\n4 - observer les alentours")
+    print("1 - fouiller dans le sac\n2 - se déplacer\n3 - parler à quelqu'un\n4 - observer les alentours")
     a = input("")
     if a == "1":
         sac()
     elif a == "2":
-        marche()
+        avancer()
     elif a == "3":
         parle()
     elif a == "4":
         cherche()
     else: rond_point()
 
+### début de l'histoire ###
 def rencontre():
-    print("un blob vous fait coucou\nil semble vous dire:\nyo Alvin, ça fait longtemps ! Bon, mec, on a besoin de toi en fait.\nJ'aurai besoin que tu me prête ton livre dont on avait parlé il y a une smeaine, se serait bien.")
+    print("un blob vous fait coucou\nil semble vous dire:\nyo l'herbiste, ça fait longtemps ! Bon, mec, on a besoin de toi en fait.\nJ'aurai besoin que tu me prête ton livre dont on avait parlé il y a une smeaine, se serait bien.")
     print("Première mission : retrouver le livre que le blob vous demande:\nallez dans votre maison, en face de vous.")
-    print("déplacez vous:\nutilisez la touche Z")
-    a = input("")
-   # if a in "Zz":
-       # position +=1
-    print("vous voyez un sac à l'entrée de la maison ")
-    maison()
+    rond_point()
     
 def histoire():
     print("Tu te réveilles allongé par terre.")
@@ -44,35 +133,13 @@ def histoire():
     print("avancer ? o/n")
     b = input("\n")
     if b == "n":
-        print("vous restez là comme un con")
+	print("vous restez là comme un con")
     elif b =="o":
-        print("vous entrez dans un village")
-        rencontre()
+	print("vous entrez dans un village")
+	rencontre()
     else: histoire()
-    
 
+### tout commence quelque part . . . ###
 histoire()
-
-
-
-
-def sac():
-	print("Si vous souhaitez ouvrir le journal appuyez sur la touche 'j' ")
-	print("Si vous souhaitez consulter vos objets appuyez sur la touche 'o' ")
-	
-	a = input("\n")
-	if a == "j":
-		def journal()
-	elif a == "o":
-		def objets()
-			
-
-def avancer():
-	print("Si vous voulez vous déplacez appuyez sur la touche 'z' ")
-	a = input("\n")
-	if a == "z":
-		print("")
-			
-
-
-
+### pour enregistrer les modifs potentiellement faites durant la partie ###
+connexion.comit()
